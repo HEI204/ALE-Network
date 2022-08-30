@@ -1,10 +1,11 @@
-from unittest import result
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
+from django.db import IntegrityError
+import json
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import FollowSerializer, PostSerializer, CommentSerializer, UserSerializer, MyTokenObtainPairSerializer
@@ -26,6 +27,25 @@ def get_user_info(request, username):
 
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
+
+
+@api_view(["POST"])
+def register_user(request):
+    request_data = dict(request.data)
+
+    username = request_data["username"]
+    email = request_data["email"]
+    password = request_data["password"]
+
+    try:
+        user = User.objects.create_user(username, email, password)
+        user.save()
+    except IntegrityError:
+        content = {"Error": f"The username already registered by other"}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])

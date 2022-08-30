@@ -29,10 +29,10 @@ class FollowerDetailsSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-    following = IntegerField(source='num_of_following')
-    followers = IntegerField(source='num_of_followers')
-    followers_details = FollowerDetailsSerializer(many=True)
-    posts = IntegerField(source="num_of_posts")
+    following = IntegerField(source='num_of_following', required=False)
+    followers = IntegerField(source='num_of_followers', required=False)
+    followers_details = FollowerDetailsSerializer(many=True, required=False)
+    posts = IntegerField(source="num_of_posts", required=False)
 
     class Meta:
         model = User

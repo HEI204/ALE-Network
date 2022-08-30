@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import AuthForm from "../components/AuthForm";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 import "../AuthPage.css";
 
 function AuthPage({ authMode }) {
@@ -29,7 +30,7 @@ function AuthPage({ authMode }) {
                 <p className="text-muted">{description}</p>
               </div>
 
-              <AuthForm authMode={authMode} />
+              {authMode === "login" ? <LoginForm /> : <RegisterForm />}
 
               <div className="card-footer bg-white border-0 text-center">
                 <Link to={targetLink}>{linkText}</Link>

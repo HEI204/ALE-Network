@@ -8,7 +8,8 @@ from . import views
 urlpatterns = [
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
+    path("register", views.register_user, name="register"),
+    
     # API for get particular user info by usernmae
     path("userinfo/<str:username>", views.get_user_info, name="get_user_info"),
     # API for get all posts which is created by a particular user

@@ -148,7 +148,7 @@ const PostList = ({ type }) => {
         ))}
       </div>
 
-      <div className="mb-5 px-2 px-md-5 d-flex justify-content-center">
+      <div className="mb-5 pb-4 px-2 px-md-5 d-flex justify-content-center">
         {pageController.previous && (
           <button
             className="btn btn-skyblue"
