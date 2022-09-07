@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
 from django.db import IntegrityError
-import json
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import FollowSerializer, PostSerializer, CommentSerializer, UserSerializer, MyTokenObtainPairSerializer

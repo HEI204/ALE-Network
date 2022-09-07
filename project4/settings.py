@@ -192,6 +192,3 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://hei204-code50-78290169-g45x9xqrv36rr-8000.githubpreview.dev'
-]
