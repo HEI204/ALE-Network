@@ -1,5 +1,6 @@
 {
   "name": "test",
+  "proxy": "https://ale-network-production.up.railway.app/",
   "version": "0.1.0",
   "homepage": "https://ale-network-production.up.railway.app",
   "private": true,

@@ -24,7 +24,7 @@ const Post = memo(
     }
 
     function handleUpdatePost() {
-      fetch(`http://127.0.0.1:8000/api/posts/${id}/edit`, {
+      fetch(`/api/posts/${id}/edit`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: postContent }),
@@ -36,7 +36,7 @@ const Post = memo(
     function handleLike() {
       if (!user) navigate("/login");
 
-      fetch(`http://127.0.0.1:8000/api/posts/${id}/like`, {
+      fetch(`/api/posts/${id}/like`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

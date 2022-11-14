@@ -23,12 +23,12 @@ function UserProfilePage() {
 
   const getUserInfo = useCallback(async () => {
     let response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${usernameFromParams}`
+      `/api/userinfo/${usernameFromParams}`
     );
     let userData = await response.json();
 
     response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${usernameFromParams}/created_posts?page=${pageController.current}`
+      `/api/userinfo/${usernameFromParams}/created_posts?page=${pageController.current}`
     );
 
     let postsData = await response.json();
@@ -55,7 +55,7 @@ function UserProfilePage() {
   }, [getUserInfo]);
 
   function handleFollow() {
-    fetch(`http://127.0.0.1:8000/api/userinfo/${usernameFromParams}/follow`, {
+    fetch(`/api/userinfo/${usernameFromParams}/follow`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

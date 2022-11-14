@@ -23,7 +23,7 @@ const Navigation = () => {
         show: !!user,
         linkTo: "/liked_posts",
         icon: "bi bi-bookmark",
-        text: "Bookmarks",
+        text: "Liked",
       },
       {
         show: !!user,
