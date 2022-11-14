@@ -188,9 +188,10 @@ STATICFILES_DIRS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://127.0.0.1:3000"
+    "http://127.0.0.1:3000",
+    "https://ale-network-production.up.railway.app"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://hei204-code50-78290169-g45x9xqrv36rr-8000.githubpreview.dev'
+    'https://ale-network-production.up.railway.app'
 ]
