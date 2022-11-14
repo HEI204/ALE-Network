@@ -62,15 +62,15 @@ const PostList = ({ type }) => {
     let response;
     if (type === "all") {
       response = await fetch(
-        `http://127.0.0.1:8000/api/posts?page=${pageController.current}`
+        `/api/posts?page=${pageController.current}`
       );
     } else if (type === "following") {
       response = await fetch(
-        `http://127.0.0.1:8000/api/userinfo/${user?.username}/following?page=${pageController.current}`
+        `/api/userinfo/${user?.username}/following?page=${pageController.current}`
       );
     } else {
       response = await fetch(
-        `http://127.0.0.1:8000/api/userinfo/${user?.username}/liked_posts?page=${pageController.current}`
+        `/api/userinfo/${user?.username}/liked_posts?page=${pageController.current}`
       );
     }
     let data = await response.json();
