@@ -4,7 +4,6 @@ django-cors-headers==3.13.0
 django-mathfilters==1.0.0
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
-whitenoise==6.1.0
 gunicorn==20.1.0
 PyJWT==2.4.0
 python-dateutil==2.8.2
