@@ -5,7 +5,7 @@ import SideNav from "./SideNav";
 import SmallScreenNav from "./SmallScreenNav";
 import AuthContext from "../context/AuthContext";
 
-import "../Navigation.css";
+import "./Navigation.css";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);

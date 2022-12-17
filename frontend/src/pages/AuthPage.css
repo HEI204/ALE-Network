@@ -1,0 +1,45 @@
+.form-control {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #D3D3D3;
+}
+
+.form-control:focus-within {
+    border-bottom: 2px solid var(--skyblue-color);
+}
+
+label {
+    color: grey;
+    position: absolute;
+}
+
+input:not(:placeholder-shown) + label {
+    color: var(--skyblue-color);
+    top: -8px !important;
+}
+
+input:focus + label {
+    color: var(--skyblue-color);
+    top: -8px !important;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.form-group .error {
+    border-bottom: 2px solid var(--lightred-color);
+}
+
+.form-group .label-error {
+    color: var(--lightred-color);
+}
+
+.error-message {
+    margin-top: 8px;
+    margin-left: 13px;
+    font-size: 12px;
+    color: var(--lightred-color);
+}

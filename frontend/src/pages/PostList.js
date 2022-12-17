@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
 
-import "../Post.css";
+import "./Post.css";
 
 const PostList = ({ type }) => {
   const [posts, setPosts] = useState([]);

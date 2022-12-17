@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
-import "../UserProfilePage.css";
+import "./UserProfilePage.css";
 
 function UserProfilePage() {
   const { user, authToken, handleLogout } = useContext(AuthContext);
