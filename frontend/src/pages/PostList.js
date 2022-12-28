@@ -1,92 +1,55 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
+import { usePosts, useNewPost } from "../hooks/usePosts";
 
 import "./Post.css";
 
 const PostList = ({ type }) => {
-  const [posts, setPosts] = useState([]);
-  const [pageController, setPageController] = useState({
-    current: 1,
-    next: null,
-    previous: null,
-  });
+  const [pageNumber, setpageNumber] = useState(1);
   const [newPostContent, setNewPostContent] = useState("");
   const { user, authToken } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { data, isLoading, isError, error } = usePosts(type, user, pageNumber);
+  const { mutate } = useNewPost(newPostContent, authToken);
+
   let pageTitle;
   if (type === "all") pageTitle = "All Posts";
   else if (type === "following") pageTitle = "Following Posts";
   else pageTitle = "Liked Posts";
 
-  function handleChange(event) {
+  const handleChange = (event) => {
     setNewPostContent(event.target.value);
-  }
+  };
 
-  async function createNewPost() {
-    let reponse = await fetch("/api/posts/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + String(authToken.access),
-      },
-      body: JSON.stringify({ content: newPostContent }),
-    });
+  const handlePageChange = (direction) => {
+    if (direction === "prev") setpageNumber((page) => page - 1);
+    else setpageNumber((page) => page + 1);
 
-    if (reponse.ok) {
-      setNewPostContent("");
-      handleClose();
-      getPosts();
-    }
-  }
-
-  function handlePageChange(direction) {
-    if (direction === "prev")
-      setPageController((prevState) => ({
-        ...prevState,
-        current: prevState.current - 1,
-      }));
-    else
-      setPageController((prevState) => ({
-        ...prevState,
-        current: prevState.current + 1,
-      }));
-  }
-
-  const getPosts = useCallback(async () => {
-    let response;
-    if (type === "all") {
-      response = await fetch(
-        `/api/posts?page=${pageController.current}`
-      );
-    } else if (type === "following") {
-      response = await fetch(
-        `/api/userinfo/${user?.username}/following?page=${pageController.current}`
-      );
-    } else {
-      response = await fetch(
-        `/api/userinfo/${user?.username}/liked_posts?page=${pageController.current}`
-      );
-    }
-    let data = await response.json();
-
-    setPageController((prevState) => ({
-      ...prevState,
-      next: data.next,
-      previous: data.previous,
-    }));
-    setPosts(data.results);
-  }, [type, user, pageController.current]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
-    getPosts();
-  }, [getPosts]);
+  };
+
+  const handleCreatePost = async () => {
+    mutate(newPostContent, authToken);
+    setNewPostContent("");
+    handleClose();
+  };
+
+  let showPost;
+  if (isError)
+    showPost = (
+      <div className="text-center">Cannot load the posts: {error}</div>
+    );
+  else if (isLoading) showPost = <div className="text-center">Loading... </div>;
+  else if (data?.results.length === 0)
+    showPost = <div className="text-center">Do not have any posts yet... </div>;
+  else
+    showPost = data?.results.map((post) => <Post key={post.id} post={post} />);
 
   return (
     <>
@@ -106,7 +69,7 @@ const PostList = ({ type }) => {
               placeholder={`What's on your mind, ${user?.username}?`}
               onChange={handleChange}
             ></textarea>
-            <button className="btn btn-skyblue" onClick={createNewPost}>
+            <button className="btn btn-skyblue" onClick={handleCreatePost}>
               Post
             </button>
           </div>
@@ -136,28 +99,24 @@ const PostList = ({ type }) => {
           ></textarea>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-skyblue" onClick={createNewPost}>
+          <button className="btn btn-skyblue" onClick={handleCreatePost}>
             Post
           </button>
         </Modal.Footer>
       </Modal>
 
-      <div className="my-md-5 px-2 px-md-5 posts-container">
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
+      <div className="my-md-5 px-2 px-md-5 posts-container">{showPost}</div>
 
       <div className="mb-5 pb-4 px-2 px-md-5 d-flex justify-content-center">
-        {pageController.previous && (
+        {data?.previous && (
           <button
-            className="btn btn-skyblue"
+            className="btn btn-skyblue me-3"
             onClick={() => handlePageChange("prev")}
           >
             Previous
           </button>
         )}
-        {pageController.next && (
+        {data?.next && (
           <button
             className="btn btn-skyblue"
             onClick={() => handlePageChange("next")}
