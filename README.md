@@ -1,7 +1,5 @@
 # ALE-Network
 
-# ALE-Mail
-
 #### Description:
 https://cs50.harvard.edu/web/2020/projects/4/network/ <br>
 In this project, I try to use React JS, Django (Django REST framwork), JWT auth to build this social network website for making posts and following users.
