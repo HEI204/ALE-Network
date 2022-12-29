@@ -18,7 +18,7 @@ const Post = memo(
     const [postContent, setPostContent] = useState(content);
     const [edit, setEdit] = useState(false);
 
-    const likePost = useLikePost(id, authToken.access);
+    const likePost = useLikePost(id, authToken?.access);
     const editPost = useEditPost(id, postContent);
 
     const navigate = useNavigate();

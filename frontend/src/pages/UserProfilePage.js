@@ -15,7 +15,7 @@ function UserProfilePage() {
   const { pageNumber, handlePageChange } = usePagination();
   const { username: usernameFromParams } = useParams();
 
-  const followUser = useFollowUser(usernameFromParams, authToken.access);
+  const followUser = useFollowUser(usernameFromParams, authToken?.access);
   const { userInfo, postsData, loadingUserInfo } = useUserInfo(
     usernameFromParams,
     pageNumber

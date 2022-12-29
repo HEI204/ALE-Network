@@ -17,7 +17,7 @@ const PostList = ({ type }) => {
   const handleShow = () => setShow(true);
 
   const { data, isLoading, isError, error } = usePosts(type, user, pageNumber);
-  const { mutate } = useNewPost(newPostContent, authToken);
+  const { mutate: createPost } = useNewPost(newPostContent, authToken);
 
   let pageTitle;
   if (type === "all") pageTitle = "All Posts";
@@ -28,15 +28,8 @@ const PostList = ({ type }) => {
     setNewPostContent(event.target.value);
   };
 
-  // const handlePageChange = (direction) => {
-  //   if (direction === "prev") setpageNumber((page) => page - 1);
-  //   else setpageNumber((page) => page + 1);
-
-  //   window.scrollTo(0, 0);
-  // };
-
   const handleCreatePost = async () => {
-    mutate(newPostContent, authToken);
+    createPost(newPostContent, authToken);
     setNewPostContent("");
     handleClose();
   };
