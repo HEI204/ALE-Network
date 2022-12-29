@@ -5,14 +5,14 @@ const getPosts = async ({ queryKey }) => {
   let response;
 
   if (type === "all") {
-    response = await fetch(`http://127.0.0.1:8000/api/posts?page=${page}`);
+    response = await fetch(`/api/posts?page=${page}`);
   } else if (type === "following") {
     response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${user?.username}/following?page=${page}`
+      `/api/userinfo/${user?.username}/following?page=${page}`
     );
   } else {
     response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${user?.username}/liked_posts?page=${page}`
+      `/api/userinfo/${user?.username}/liked_posts?page=${page}`
     );
   }
 
@@ -20,7 +20,7 @@ const getPosts = async ({ queryKey }) => {
 };
 
 const createNewPost = async (newPostContent, authToken) => {
-  let response = await fetch("http://127.0.0.1:8000/api/posts/create", {
+  let response = await fetch("/api/posts/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

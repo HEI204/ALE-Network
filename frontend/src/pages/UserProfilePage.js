@@ -1,99 +1,34 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
+
+import usePagination from "../hooks/usePagination";
+import useFollowUser from "../hooks/useFollowUser";
+import useUserInfo from "../hooks/useUserInfo";
+
 import "./UserProfilePage.css";
 
 function UserProfilePage() {
   const { user, authToken, handleLogout } = useContext(AuthContext);
-  const [pageController, setPageController] = useState({
-    current: 1,
-    next: null,
-    previous: null,
-  });
-  const [loading, setLoading] = useState(true);
-  const [profileInfo, setProfileInfo] = useState({
-    userInfo: null,
-    createdPost: null,
-    isFollow: null,
-  });
+  const { pageNumber, handlePageChange } = usePagination();
+  const { username: usernameFromParams } = useParams();
 
-  let { username: usernameFromParams } = useParams();
+  const followUser = useFollowUser(usernameFromParams, authToken.access);
+  const { userInfo, postsData, loadingUserInfo } = useUserInfo(
+    usernameFromParams,
+    pageNumber
+  );
 
-  const getUserInfo = useCallback(async () => {
-    let response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${usernameFromParams}`
-    );
-    let userData = await response.json();
-
-    response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${usernameFromParams}/created_posts?page=${pageController.current}`
-    );
-
-    let postsData = await response.json();
-
-    setProfileInfo({
-      userInfo: userData,
-      createdPosts: postsData.results,
-      isFollow: !!userData?.followers_details.filter(
-        (follower) => follower.user === user?.user_id
-      ).length,
-    });
-
-    setPageController((prevState) => ({
-      ...prevState,
-      next: postsData.next,
-      previous: postsData.previous,
-    }));
-
-    setLoading(false);
-  }, [usernameFromParams, user?.user_id, pageController.current]);
-
-  useEffect(() => {
-    getUserInfo();
-  }, [getUserInfo]);
-
-  function handleFollow() {
-    fetch(`http://127.0.0.1:8000/api/userinfo/${usernameFromParams}/follow`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + String(authToken.access),
-      },
-    });
-
-    let newFollowersCount;
-    if (profileInfo.isFollow)
-      newFollowersCount = profileInfo.userInfo.followers - 1;
-    else newFollowersCount = profileInfo.userInfo.followers + 1;
-
-    setProfileInfo((prevInfo) => ({
-      ...prevInfo,
-      userInfo: {
-        ...prevInfo.userInfo,
-        followers: newFollowersCount,
-      },
-      isFollow: !prevInfo.isFollow,
-    }));
-  }
-
-  function handlePageChange(direction) {
-    if (direction === "prev")
-      setPageController((prevState) => ({
-        ...prevState,
-        current: prevState.current - 1,
-      }));
-    else
-      setPageController((prevState) => ({
-        ...prevState,
-        current: prevState.current + 1,
-      }));
-  }
+  const createdPosts = postsData?.results;
+  const isFollow = !!userInfo?.followers_details.filter(
+    (follower) => follower.user === user?.user_id
+  ).length;
 
   return (
     <>
-      {!loading && (
+      {!loadingUserInfo && (
         <>
           <div className="profile-header border-bottom border-1">
             <p id="username" className="text-center my-auto">
@@ -122,11 +57,10 @@ function UserProfilePage() {
               <div id="user-post-number">
                 <span
                   className={
-                    "fw-bolder " +
-                    (profileInfo.userInfo.posts === 0 ? "text-muted" : "")
+                    "fw-bolder " + (userInfo?.posts === 0 ? "text-muted" : "")
                   }
                 >
-                  {profileInfo.userInfo.posts}
+                  {userInfo.posts}
                 </span>
                 <span>Posts</span>
               </div>
@@ -135,10 +69,10 @@ function UserProfilePage() {
                 <span
                   className={
                     "fw-bolder " +
-                    (profileInfo.userInfo.followers === 0 ? "text-muted" : "")
+                    (userInfo?.followers === 0 ? "text-muted" : "")
                   }
                 >
-                  {profileInfo.userInfo.followers}
+                  {userInfo?.followers}
                 </span>
                 <span>Followers</span>
               </div>
@@ -147,10 +81,10 @@ function UserProfilePage() {
                 <span
                   className={
                     "fw-bolder " +
-                    (profileInfo.userInfo.following === 0 ? "text-muted" : "")
+                    (userInfo?.following === 0 ? "text-muted" : "")
                   }
                 >
-                  {profileInfo.userInfo.following}
+                  {userInfo?.following}
                 </span>
                 <span>Following</span>
               </div>
@@ -158,17 +92,17 @@ function UserProfilePage() {
 
             {user && user.username !== usernameFromParams && (
               <div className="follow-btn-groups row mt-4 px-3 px-md-4">
-                {profileInfo.isFollow ? (
+                {isFollow ? (
                   <button
                     className="btn btn-lightred text-center"
-                    onClick={() => handleFollow()}
+                    onClick={followUser}
                   >
                     Unfollow
                   </button>
                 ) : (
                   <button
                     className="btn btn-skyblue text-center"
-                    onClick={() => handleFollow()}
+                    onClick={followUser}
                   >
                     Follow
                   </button>
@@ -178,21 +112,21 @@ function UserProfilePage() {
           </div>
           <hr className="w-100" />
           <div className="mt-4 mt-md-5 px-2 px-3 px-md-5 profile-posts-container">
-            {profileInfo.createdPosts.map((post) => (
+            {createdPosts?.map((post) => (
               <Post key={post.id} post={post} />
             ))}
           </div>
 
           <div className="mb-5 px-2 px-md-5 d-flex justify-content-center">
-            {pageController.previous && (
+            {postsData?.previous && (
               <button
-                className="btn btn-skyblue"
+                className="btn btn-skyblue me-3"
                 onClick={() => handlePageChange("prev")}
               >
                 Previous
               </button>
             )}
-            {pageController.next && (
+            {postsData?.next && (
               <button
                 className="btn btn-skyblue"
                 onClick={() => handlePageChange("next")}

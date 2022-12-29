@@ -5,7 +5,9 @@ import { AuthContextProvider } from "./context/AuthContext";
 import MainLayout from "./components/MainLayout";
 import PostList from "./pages/PostList";
 import UserProfilePage from "./pages/UserProfilePage";
+import NotFoundPage from "./pages/NotFoundPage"
 import ProtectedRoute from "./utils/ProtectedRoute";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import "./App.css";
 
@@ -71,11 +73,12 @@ function App() {
                   />
                   <Route
                     path="*"
-                    element={<div>This route does not exist...</div>}
+                    element={<NotFoundPage />}
                   />
                 </Routes>
               </AuthContextProvider>
             </BrowserRouter>
+            {/* <ReactQueryDevtools initialIsOpen={true} />  */}
           </QueryClientProvider>
         </div>
       </div>

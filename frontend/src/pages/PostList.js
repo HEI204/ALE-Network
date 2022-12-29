@@ -4,11 +4,12 @@ import Modal from "react-bootstrap/Modal";
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
 import { usePosts, useNewPost } from "../hooks/usePosts";
+import usePagination from "../hooks/usePagination";
 
 import "./Post.css";
 
 const PostList = ({ type }) => {
-  const [pageNumber, setpageNumber] = useState(1);
+  const { pageNumber, handlePageChange } = usePagination();
   const [newPostContent, setNewPostContent] = useState("");
   const { user, authToken } = useContext(AuthContext);
   const [show, setShow] = useState(false);
@@ -27,12 +28,12 @@ const PostList = ({ type }) => {
     setNewPostContent(event.target.value);
   };
 
-  const handlePageChange = (direction) => {
-    if (direction === "prev") setpageNumber((page) => page - 1);
-    else setpageNumber((page) => page + 1);
+  // const handlePageChange = (direction) => {
+  //   if (direction === "prev") setpageNumber((page) => page - 1);
+  //   else setpageNumber((page) => page + 1);
 
-    window.scrollTo(0, 0);
-  };
+  //   window.scrollTo(0, 0);
+  // };
 
   const handleCreatePost = async () => {
     mutate(newPostContent, authToken);
