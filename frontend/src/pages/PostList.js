@@ -3,6 +3,8 @@ import Modal from "react-bootstrap/Modal";
 
 import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
+import Loading from "../components/Loading";
+
 import { usePosts, useNewPost } from "../hooks/usePosts";
 import usePagination from "../hooks/usePagination";
 
@@ -37,9 +39,9 @@ const PostList = ({ type }) => {
   let showPost;
   if (isError)
     showPost = (
-      <div className="text-center">Cannot load the posts: {error}</div>
+      <div className="text-center">Cannot load the posts</div>
     );
-  else if (isLoading) showPost = <div className="text-center">Loading... </div>;
+  else if (isLoading) showPost = <Loading />;
   else if (data?.results.length === 0)
     showPost = <div className="text-center">Do not have any posts yet... </div>;
   else

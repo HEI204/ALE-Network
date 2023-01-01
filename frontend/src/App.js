@@ -5,11 +5,12 @@ import { AuthContextProvider } from "./context/AuthContext";
 import MainLayout from "./components/MainLayout";
 import PostList from "./pages/PostList";
 import UserProfilePage from "./pages/UserProfilePage";
-import NotFoundPage from "./pages/NotFoundPage"
+import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
 import "./App.css";
+import ScrollToTop from "./helpers/ScrollToTop";
 
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 
@@ -22,6 +23,7 @@ function App() {
         <div className="row g-0">
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
+              <ScrollToTop />
               <AuthContextProvider>
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
@@ -71,10 +73,7 @@ function App() {
                       </Suspense>
                     }
                   />
-                  <Route
-                    path="*"
-                    element={<NotFoundPage />}
-                  />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </AuthContextProvider>
             </BrowserRouter>

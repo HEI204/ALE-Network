@@ -5,7 +5,7 @@ const useFollowUser = (username, access) => {
 
   const handleFollow = async () => {
     let response = await fetch(
-      `/api/userinfo/${username}/follow`,
+      `http://127.0.0.1:8000/api/userinfo/${username}/follow`,
       {
         method: "PUT",
         headers: {

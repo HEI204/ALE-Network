@@ -4,7 +4,7 @@ const useLikePost = (id, access) => {
   const queryClient = useQueryClient();
 
   const handleLikePost = async () => {
-    let response = await fetch(`/api/posts/${id}/like`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/posts/${id}/like`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
