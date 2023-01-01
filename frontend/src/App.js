@@ -55,7 +55,7 @@ function App() {
                   <Route
                     path="/login"
                     element={
-                      <Suspense fallback={<Loading />}>
+                      <Suspense fallback={<Loading fixed={true} />}>
                         <AuthPage authMode={"login"} />
                       </Suspense>
                     }
@@ -63,7 +63,7 @@ function App() {
                   <Route
                     path="/register"
                     element={
-                      <Suspense fallback={<Loading />}>
+                      <Suspense fallback={<Loading fixed={true} />}>
                         <AuthPage authMode={"register"} />
                       </Suspense>
                     }

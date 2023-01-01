@@ -41,7 +41,7 @@ const PostList = ({ type }) => {
     showPost = (
       <div className="text-center">Cannot load the posts</div>
     );
-  else if (isLoading) showPost = <Loading />;
+  else if (isLoading) showPost = <Loading fixed={true} />;
   else if (data?.results.length === 0)
     showPost = <div className="text-center">Do not have any posts yet... </div>;
   else
