@@ -1,16 +1,19 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
+
 import { AuthContextProvider } from "./context/AuthContext";
 import MainLayout from "./components/MainLayout";
+import Loading from "./components/Loading";
 import PostList from "./pages/PostList";
 import UserProfilePage from "./pages/UserProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import ScrollToTop from "./helpers/ScrollToTop";
+
 // import { ReactQueryDevtools } from "react-query/devtools";
 
 import "./App.css";
-import ScrollToTop from "./helpers/ScrollToTop";
 
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 
@@ -52,11 +55,7 @@ function App() {
                   <Route
                     path="/login"
                     element={
-                      <Suspense
-                        fallback={
-                          <h1 className="text-center mt-5">Loading....</h1>
-                        }
-                      >
+                      <Suspense fallback={<Loading />}>
                         <AuthPage authMode={"login"} />
                       </Suspense>
                     }
@@ -64,11 +63,7 @@ function App() {
                   <Route
                     path="/register"
                     element={
-                      <Suspense
-                        fallback={
-                          <h1 className="text-center mt-5">Loading....</h1>
-                        }
-                      >
+                      <Suspense fallback={<Loading />}>
                         <AuthPage authMode={"register"} />
                       </Suspense>
                     }
