@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
 import Loading from "../components/Loading";
 
@@ -10,6 +9,7 @@ import useFollowUser from "../hooks/useFollowUser";
 import useUserInfo from "../hooks/useUserInfo";
 
 import "./UserProfilePage.css";
+import ShowPosts from "../components/ShowPosts";
 
 function UserProfilePage() {
   const { user, authToken, handleLogout } = useContext(AuthContext);
@@ -20,7 +20,8 @@ function UserProfilePage() {
   const {
     userInfo,
     postsData,
-    loadingUserDetails,
+    loadingUserInfo,
+    loadingUserPosts,
     userInfoError,
     userPostsError,
   } = useUserInfo(usernameFromParams, pageNumber);
@@ -30,15 +31,7 @@ function UserProfilePage() {
     (follower) => follower.user === user?.user_id
   ).length;
 
-  if (loadingUserDetails) return <Loading />;
-
-  let showPost;
-  if (userPostsError)
-    showPost = <div className="text-center">{userPostsError}</div>;
-  else if (createdPosts?.length === 0)
-    showPost = <div className="text-center">Do not have any posts yet... </div>;
-  else
-    showPost = createdPosts?.map((post) => <Post key={post.id} post={post} />);
+  if (loadingUserInfo) return <Loading />;
 
   return (
     <>
@@ -98,7 +91,7 @@ function UserProfilePage() {
           </div>
         </div>
 
-        {!userInfoError && user?.username !== usernameFromParams && (
+        {!userInfoError && user && user?.username !== usernameFromParams && (
           <div className="follow-btn-groups row mt-4 px-3 px-md-4">
             {isFollow ? (
               <button
@@ -123,7 +116,11 @@ function UserProfilePage() {
       {!userInfoError && (
         <>
           <div className="mt-4 mt-md-5 px-2 px-3 px-md-5 profile-posts-container">
-            {showPost}
+            <ShowPosts
+              loading={loadingUserPosts}
+              error={userPostsError}
+              posts={createdPosts}
+            />
           </div>
 
           <div className="mb-5 px-2 px-md-5 d-flex justify-content-center">

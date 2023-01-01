@@ -16,6 +16,8 @@ const getPosts = async ({ queryKey }) => {
     );
   }
 
+  if (!response.ok) throw new Error("Cannot load the posts");
+
   return await response.json();
 };
 

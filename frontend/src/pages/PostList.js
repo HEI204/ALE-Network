@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 
-import Post from "../components/Post";
 import AuthContext from "../context/AuthContext";
-import Loading from "../components/Loading";
 
 import { usePosts, useNewPost } from "../hooks/usePosts";
 import usePagination from "../hooks/usePagination";
 
+import ShowPosts from "../components/ShowPosts";
 import "./Post.css";
 
 const PostList = ({ type }) => {
@@ -18,7 +17,7 @@ const PostList = ({ type }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { data, isLoading, isError, error } = usePosts(type, user, pageNumber);
+  const { data, isLoading, error } = usePosts(type, user, pageNumber);
   const { mutate: createPost } = useNewPost(newPostContent, authToken);
 
   let pageTitle;
@@ -35,17 +34,6 @@ const PostList = ({ type }) => {
     setNewPostContent("");
     handleClose();
   };
-
-  let showPost;
-  if (isError)
-    showPost = (
-      <div className="text-center">Cannot load the posts</div>
-    );
-  else if (isLoading) showPost = <Loading fixed={true} />;
-  else if (data?.results.length === 0)
-    showPost = <div className="text-center">Do not have any posts yet... </div>;
-  else
-    showPost = data?.results.map((post) => <Post key={post.id} post={post} />);
 
   return (
     <>
@@ -101,7 +89,9 @@ const PostList = ({ type }) => {
         </Modal.Footer>
       </Modal>
 
-      <div className="my-md-5 px-2 px-md-5 posts-container">{showPost}</div>
+      <div className="my-md-5 px-2 px-md-5 posts-container">
+        <ShowPosts loading={isLoading} error={error} posts={data?.results} />
+      </div>
 
       <div className="mb-5 pb-4 px-2 px-md-5 d-flex justify-content-center">
         {data?.previous && (

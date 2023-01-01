@@ -46,12 +46,11 @@ const useUserInfo = (username, page) => {
     enabled: !!userInfo?.username,
   });
 
-  const loadingUserDetails = loadingUserInfo || loadingUserPosts;
-
   return {
     userInfo,
     postsData,
-    loadingUserDetails,
+    loadingUserInfo,
+    loadingUserPosts,
     userInfoError,
     userPostsError,
   };
