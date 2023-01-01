@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useQuery } from "react-query";
 
 const useUserInfo = (username, page) => {
+  const [refetch, setRefetch] = useState(true);
+
   const getUserInfo = async ({ queryKey }) => {
     const fetchUsername = queryKey[1];
     let response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${fetchUsername}`
+      `/api/userinfo/${fetchUsername}`
     );
 
     if (!response.ok) throw new Error("User not found");
@@ -15,7 +18,7 @@ const useUserInfo = (username, page) => {
   const getUserCreatedPosts = async ({ queryKey }) => {
     const [, fetchUsername, pageNumber] = queryKey;
     let response = await fetch(
-      `http://127.0.0.1:8000/api/userinfo/${fetchUsername}/created_posts?page=${pageNumber}`
+      `/api/userinfo/${fetchUsername}/created_posts?page=${pageNumber}`
     );
 
     if (!response.ok) throw new Error("Cannot load user's post");
@@ -27,7 +30,13 @@ const useUserInfo = (username, page) => {
     data: userInfo,
     isLoading: loadingUserInfo,
     error: userInfoError,
-  } = useQuery(["user-info", username], getUserInfo);
+  } = useQuery(["user-info", username], getUserInfo, {
+    onError: () => {
+      setRefetch(false);
+    },
+    retry: 1,
+    refetchOnWindowFocus: refetch,
+  });
 
   const {
     data: postsData,
