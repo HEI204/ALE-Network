@@ -2,6 +2,7 @@ import React, { memo, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
+import logo from "../images/logo.png";
 
 const SmallScreenNav = memo(({ links }) => {
   const { user } = useContext(AuthContext);
@@ -9,9 +10,9 @@ const SmallScreenNav = memo(({ links }) => {
   return (
     <>
       <nav className="navbar bg-white bg-white fixed-top min-vw-100 border-bottom border-1">
-        <i className="bi bi-twitter ms-5"></i>
+        <img className="ms-4 img-fluid" src={logo} width="55" height="55" />
 
-        <div className="me-5">
+        <div className="me-4">
           {!user && (
             <Link to="/login" className="btn btn-skyblue w-100">
               Login

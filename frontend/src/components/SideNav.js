@@ -2,13 +2,15 @@ import React, { memo, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
+import logo from "../images/logo.png";
+
 const SideNav = memo(({ links }) => {
   const { user } = useContext(AuthContext);
 
   return (
     <nav className="side-nav min-vh-100 ps-xl-4">
       <div className="mt-3 mb-4 ps-xl-1">
-        <i className="bi bi-twitter"></i>
+        <img className="img-fluid" src={logo} width="100" height="100" />
       </div>
 
       <ul className="nav-list ps-xl-1 mb-3">
