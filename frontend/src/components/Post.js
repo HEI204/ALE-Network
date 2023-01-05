@@ -9,12 +9,15 @@ import Col from "react-bootstrap/Col";
 import useLikePost from "../hooks/useLikePost";
 import useEditPost from "../hooks/useEditPost";
 
+import profileImage from "../images/default_profile_image.png";
+
 const Post = memo(
   ({ post: { id, likes, user: post_author, content, datetime, liked_by } }) => {
     const { user, authToken } = useContext(AuthContext);
     const [likeAlready, setLikeAlready] = useState(
       liked_by.includes(user?.username)
     );
+    const [numOflikes, setNumOflikes] = useState(likes);
     const [postContent, setPostContent] = useState(content);
     const [edit, setEdit] = useState(false);
 
@@ -33,8 +36,14 @@ const Post = memo(
     };
 
     const handleLike = () => {
-      if (!user) navigate("/login");
+      if (!user) {
+        navigate("/login");
+        return;
+      }
+
       likePost();
+      if (!likeAlready) setNumOflikes((prev) => prev + 1);
+      else setNumOflikes((prev) => prev - 1);
       setLikeAlready((prev) => !prev);
     };
 
@@ -50,7 +59,7 @@ const Post = memo(
                 <img
                   className="user-icon-img"
                   alt="user-icon"
-                  src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+                  src={profileImage}
                 />
               </Link>
             </Col>
@@ -99,7 +108,7 @@ const Post = memo(
           )}
 
           <Card.Text className="mt-4 pt-2 number-of-likes text-muted">
-            {likes} likes
+            {numOflikes} likes
           </Card.Text>
           <hr />
 

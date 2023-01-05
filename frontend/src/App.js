@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
 import { AuthContextProvider } from "./context/AuthContext";
 import MainLayout from "./components/MainLayout";
@@ -10,8 +11,6 @@ import UserProfilePage from "./pages/UserProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ScrollToTop from "./helpers/ScrollToTop";
-
-// import { ReactQueryDevtools } from "react-query/devtools";
 
 import "./App.css";
 

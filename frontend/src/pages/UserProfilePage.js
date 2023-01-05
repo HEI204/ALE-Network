@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
 import Loading from "../components/Loading";
+import ShowPosts from "../components/ShowPosts";
 
 import usePagination from "../hooks/usePagination";
 import useFollowUser from "../hooks/useFollowUser";
 import useUserInfo from "../hooks/useUserInfo";
 
 import "./UserProfilePage.css";
-import ShowPosts from "../components/ShowPosts";
+import profileImage from "../images/default_profile_image.png";
 
 function UserProfilePage() {
   const { user, authToken, handleLogout } = useContext(AuthContext);
@@ -53,7 +54,7 @@ function UserProfilePage() {
         <img
           className="user-icon col-4 me-4 me-md-0"
           alt="user-icon"
-          src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+          src={profileImage}
         />
 
         <div className="profile-status col-8">
