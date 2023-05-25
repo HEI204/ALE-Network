@@ -33,6 +33,8 @@ urlpatterns = [
     path("posts/<str:post_id>", views.get_post, name="get_post"),
     # API for user to edit the content of the existing post by id
     path("posts/<str:post_id>/edit", views.edit_post, name="edit_post"),
+    # API for user to delete post
+    path("posts/<str:post_id>/delete", views.delete_post, name="delete_post"),
     # API for user to like the post by id
     path("posts/<str:post_id>/like", views.like_post, name="like_post"),
 

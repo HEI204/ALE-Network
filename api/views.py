@@ -85,7 +85,24 @@ def create_post(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_post(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        content = {"Error": f"Post #{post_id} does not exist"}
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    
+    if not (post.user == request.user):
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    post.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 @api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
 def edit_post(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
@@ -93,6 +110,9 @@ def edit_post(request, post_id):
     except Post.DoesNotExist:
         content = {"Error": f"Post #{post_id} does not exist"}
         return Response(content, status=status.HTTP_404_NOT_FOUND)
+    
+    if not (post.user == request.user):
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = PostSerializer(instance=post, data=request.data, partial=True)
 
