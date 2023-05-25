@@ -1,29 +1,28 @@
 import { useMutation, useQueryClient } from "react-query";
 
-const useEditPost = (id, postContent, authToken) => {
+const useDeletePost = (id, authToken) => {
   const queryClient = useQueryClient();
 
-  const handleUpdatePost = async () => {
-    let response = await fetch(`/api/posts/${id}/edit`, {
-      method: "PATCH",
+  const handleDeletePost = async () => {
+    let response = await fetch(`/api/posts/${id}/delete`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + String(authToken.access),
       },
-      body: JSON.stringify({ content: postContent }),
     });
 
     return await response.json();
   };
 
-  const { mutate: editPost } = useMutation(handleUpdatePost, {
+  const { mutate: deletePost } = useMutation(handleDeletePost, {
     onSuccess: () => {
       queryClient.invalidateQueries("posts");
       queryClient.invalidateQueries("user-created-posts");
     },
   });
 
-  return editPost;
+  return deletePost;
 };
 
-export default useEditPost;
+export default useDeletePost;

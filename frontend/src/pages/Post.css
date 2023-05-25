@@ -37,6 +37,12 @@
     align-items: center;
 }
 
+.username {
+    text-decoration: none;
+    color: black !important; 
+    font-weight: bolder;
+}
+
 .user-icon-img {
     width: 15%;
     min-width: 55px;
@@ -46,12 +52,6 @@
 .post-datetime {
     color: #8d9498;
     font-size: 12px
-}
-
-.bi-pencil {
-    color: #8d9498;
-    cursor: pointer;
-    font-size: 18px;
 }
 
 .number-of-likes {
@@ -67,6 +67,22 @@
     justify-content: center
 }
 
+.view-more-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    min-width: 5rem !important;
+}
+
+.dropdown-item:active {
+    background-color: white;
+    color: black;
+}
+
 @media screen and (max-width: 768px) {
     .post-btn-group {
         justify-content: space-evenly;
@@ -80,7 +96,8 @@
 .bi-heart,
 .bi-heart-fill,
 .bi-chat-left-dots,
-.bi-share {
+.bi-share,
+.bi-three-dots {
     font-size: 20px;
 }
 
