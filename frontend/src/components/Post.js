@@ -22,8 +22,12 @@ const Post = memo(
     );
     const [numOflikes, setNumOflikes] = useState(likes);
     const [postContent, setPostContent] = useState(content);
+    const [show, setShow] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [edit, setEdit] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const likePost = useLikePost(id, authToken?.access);
     const editPost = useEditPost(id, postContent, authToken);
@@ -114,7 +118,7 @@ const Post = memo(
                         <li>
                           <span
                             className="dropdown-item text-danger"
-                            onClick={handleDeletePost}
+                            onClick={() => handleShow()}
                           >
                             Delete
                           </span>
@@ -175,22 +179,18 @@ const Post = memo(
             </Card.Body>
           </Card>
 
-          <Modal centered>
+          <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
-              <Modal.Title>Create Post</Modal.Title>
+              <Modal.Title>Delete Confirmation</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <textarea
-                className="w-100 border-0"
-                rows="5"
-                maxLength="280"
-                name="content"
-                //value={}
-                //placeholder={``}
-                //onChange={}
-              ></textarea>
-            </Modal.Body>
+            <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
             <Modal.Footer>
+            <button className="btn btn-skyblue" onClick={handleDeletePost}>
+                Yes
+              </button>
+              <button className="btn btn-danger" onClick={handleClose}>
+                No
+              </button>
             </Modal.Footer>
           </Modal>
         </>
