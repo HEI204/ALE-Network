@@ -24,7 +24,7 @@ SECRET_KEY = '13kl@xtukpwe&xj2xoysxe9_6=tf@f8ewxer5n&ifnd46+6$%8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ale-network-production.up.railway.app"]
+ALLOWED_HOSTS = ["ale-network-production.up.railway.app", "ale-network.vercel.app"]
 
 
 # Application definition
@@ -188,11 +188,13 @@ STATICFILES_DIRS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://ale-network-production.up.railway.app"
+    "https://ale-network-production.up.railway.app",
+    "https://ale-network.vercel.app/"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ale-network-production.up.railway.app'
+    'https://ale-network-production.up.railway.app',
+    "https://ale-network.vercel.app/"
 ]
 
 
